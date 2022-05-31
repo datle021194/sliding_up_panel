@@ -131,6 +131,8 @@ class SlidingUpPanel extends StatefulWidget {
   /// is fully collapsed.
   final VoidCallback? onPanelClosed;
 
+  final void Function(double position)? onPanelGestureEnded;
+
   /// If non-null and true, the SlidingUpPanel exhibits a
   /// parallax effect as the panel slides up. Essentially,
   /// the body slides up as the panel slides up.
@@ -189,6 +191,7 @@ class SlidingUpPanel extends StatefulWidget {
       this.onPanelSlide,
       this.onPanelOpened,
       this.onPanelClosed,
+      this.onPanelGestureEnded,
       this.parallaxEnabled = false,
       this.parallaxOffset = 0.1,
       this.isDraggable = true,
@@ -539,6 +542,9 @@ class _SlidingUpPanelState extends State<SlidingUpPanel>
         );
       }
 
+      if (widget.onPanelGestureEnded != null)
+        widget.onPanelGestureEnded!(_ac.value);
+
       return;
     }
 
@@ -552,6 +558,9 @@ class _SlidingUpPanelState extends State<SlidingUpPanel>
         _open();
       }
     }
+
+    if (widget.onPanelGestureEnded != null)
+        widget.onPanelGestureEnded!(_ac.value);
   }
 
   void _flingPanelToPosition(double targetPos, double velocity) {
